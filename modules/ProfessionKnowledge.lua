@@ -17,9 +17,6 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	end
 end)
 
--- Local atlas kit specifier (avoid calling Professions.GetAtlasKitSpecifier / GetChildProfessionInfo to prevent taint)
-local kitSpecifiers = tInvert(Enum.Profession)
-
 -----------------------
 -- KNOWLEDGE TRACKER --
 -----------------------
@@ -128,7 +125,7 @@ function app:UpdateKnowledgeTracker()
 
 		-- Set text, background, and progress, then show bar
 		app.KnowledgePointTracker.Text:SetText(perksEarned .. "/" .. perkCount .. " " .. L.PERKS_UNLOCKED .. " (" .. knowledgeSpent .. "/" .. knowledgeMax .. " " .. L.PROFESSION_KNOWLEDGE .. ")")
-		local atlasInfo = C_Texture.GetAtlasInfo("Skillbar_Fill_Flipbook_" .. (kitSpecifiers[professionID] or "DefaultBlue"))
+		local atlasInfo = C_Texture.GetAtlasInfo("Skillbar_Fill_Flipbook_" .. Professions.GetAtlasKitSpecifier(C_TradeSkillUI.GetChildProfessionInfo()) or "DefaultBlue")
 		local progress = knowledgeSpent / knowledgeMax
 		if progress <= 0 then
 			progress = 0.001	-- Weird overflow issue with the texture at 0
